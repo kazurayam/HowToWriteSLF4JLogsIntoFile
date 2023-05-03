@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  In the directory `KatalonInstallationDir/Contents/Eclipse/plugins/com.kms.katalon.coreContents/Eclipse/plugins/`
+  there is a jar file named `com.kms.katalon.core_1.0.0.202303100818.jar`
+  The jar contains a file `resources/logback/logback-console.xml`.
+  This is the Logback configuration applied to the overall processing in Katalon Studio.
+  
+  kazurayam took the copy of that xml file, pasted here.
+  kazurayam modified it slightly so that the logs are written into a file.
+  The path of the file is specified runtime.
+  But how?
+-->
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <target>System.out</target>
+    <filter class="com.kms.katalon.core.logging.logback.SystemOutFilter" />
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>
+    </encoder>
+  </appender>
+  <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+    <target>System.err</target>
+    <filter class="com.kms.katalon.core.logging.logback.SystemErrFilter" />
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>tests.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- internal APIs -->
+  <logger name="com.kms" level="info" />
+  <logger name="cucumber.runtime.formatter.CucumberReporter" level="debug" />
+  <logger name="com.kms.katalon.core.logging.KeywordLogger" level="trace" />
+  <logger name="com.kms.katalon.core.util.KeywordUtil" level="trace" />
+  
+  <!-- test case scripts -->
+  <logger name="testcase" level="debug" />
+  
+  <!-- generated CustomKeywords file -->
+  <logger name="CustomKeywords" level="debug" />
+  
+  <!-- built-in keywords -->
+  <logger name="com.kms.katalon.core.keyword.builtin.CommentKeyword" level="info" />
+  
+  <!-- kazurayam's artifacts -->
+  <logger name="com.kazurayam" level="debug">
+    <appender-ref ref="FILE" />
+  </logger>
+  
+  <root level="error">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="STDERR" />
+  </root>
+</configuration>
