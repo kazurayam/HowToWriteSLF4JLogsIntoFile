@@ -26,14 +26,6 @@
     </encoder>
   </appender>
   
-  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <file>tests.log</file>
-    <append>true</append>
-    <encoder>
-      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>
-    </encoder>
-  </appender>
-
   <!-- internal APIs -->
   <logger name="com.kms" level="info" />
   <logger name="cucumber.runtime.formatter.CucumberReporter" level="debug" />
@@ -48,11 +40,6 @@
   
   <!-- built-in keywords -->
   <logger name="com.kms.katalon.core.keyword.builtin.CommentKeyword" level="info" />
-  
-  <!-- kazurayam's artifacts -->
-  <logger name="com.kazurayam" level="debug">
-    <appender-ref ref="FILE" />
-  </logger>
   
   <root level="error">
     <appender-ref ref="STDOUT" />
