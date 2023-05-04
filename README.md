@@ -180,7 +180,7 @@ This XML declares an Appender named `FILE`. And the `FILE` appender is applied t
 
 > I included a file [`logback-console.xml`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-console.xml) which is the default Logback configuration used by Katalon Studio. If you read this, you would understand how the logging is configured as default in Katalon Studio.
 
-## How to create a demo
+## How to create a project that logs into a file
 
 You want to create a Katalon Studio on your PC. Let me call it the "test" project.
 
@@ -190,11 +190,11 @@ Also please create `Keywords/myapp/MyApp3.groovy` and `Keywords/myapp/Foo.groovy
 
 Now we will need to do something new.
 
-Please visit the [Releases](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/releases/) page of GitHub repository. You will find a link to a jar file named `LoggerContextConfigurator-x.x.x.jar`. Please download the jar file and save it into the `Drivers` folder of your local Katalon Studio project. The `Driver` folder would like this:
+Please visit the [Releases](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/releases/) page of GitHub repository. You will find a link to a jar file named `LoggerContextConfigurator-x.x.x.jar`. This jar contains the compiled binary of the class [`com.kazurayam.ks.LoggerContextConfigurator`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy). Please download the jar file and save it into the `Drivers` folder of your local Katalon Studio project. The `Driver` folder would like this:
 
 ![02 Drivers](https://kazurayam.github.io/HowToWriteSLF4JLogsIntoFile/images/02_Drivers.png)
 
-Please create a file lin:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-file.xml\[`Include/config/logback-file.xml`\]. The content of the file should be like the one as described above. You should copy and paste it.
+Please create a file [`Include/config/logback-file.xml`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-file.xml). The content of the file should be exactly like the source. You should copy and paste it.
 
 The final step; you want to create a Test Listener.
 
