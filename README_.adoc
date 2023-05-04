@@ -93,12 +93,25 @@ Please visit the link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/r
 
 image::https://kazurayam.github.io/HowToWriteSLF4JLogsIntoFile/images/02_Drivers.png[]
 
+Please create a file `Include/config/logback-file.xml`. The content of the file should be like the one as described above.
 
+Please note the `com.kazurayam.ks.LoggerContextConfigurator` class knows the the path of the xml file to load.
 
+Final step. You want to create a Test Listener.
 
+- link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Test%40Listener/ConfigLogger.groovy[Test Listener/ConfigLogger.groovy]
 
+[source]
+----
+include::Test Listeners/ConfigLogger.groovy[]
+----
 
+This Test Listener just calls the `LoggerContextConfigurator.configure()` when any Test Cases and Test Suites are invoked. Effectively the SLF4J `Logger` is customized so that it writes logs into file.
 
-In the link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/releases/[Releases] page, you can find a link to `LoggerContextConfigurator-x.x.x.jar`.
+== Further customization
 
+You can change the name of output log file as well as its location by modifying the xml file.
 
+You can add new xml file and do whatever customization of SLF4J logging you want.
+
+How to? --- Please read the code and find for yourself.

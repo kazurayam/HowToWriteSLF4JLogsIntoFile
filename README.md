@@ -75,4 +75,107 @@ Using this technique, I should be able to customize the `LoggingContext` of Logb
 
 ## Solution described
 
-The \[Releases\] page
+I have developed a Groovy class [`com.kazurayam.ks.LoggerContextConfigurator`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy)
+
+    include:Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy[]
+
+This code is almost identical to the sample code of Logback documentation. It overwrites the LoggerContext object as constructed by Katalon Studio while overwriting properties with the specified XML.
+
+The class applies the following XML config as default.
+
+-   <https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-file.xml>
+
+<!-- -->
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <configuration>
+      
+      <property name="LOG_ROOT" value="./build/logs" />
+      <property name="LOG_FILE_NAME" value="myapp" />
+      
+      <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_ROOT}/${LOG_FILE_NAME}.log</file>
+        <append>true</append>
+        <encoder>
+          <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>
+        </encoder>
+      </appender>
+
+      <!-- com.kms and com.kazurayam, etc -->
+      <logger name="com" level="debug">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="STDERR"/>
+        
+        <appender-ref ref="FILE" />
+      </logger>
+      
+    </configuration>
+
+This XML declares an Appender named `FILE`. And the `FILE` appender is applied to all classes of which fully-qualified-class-names starts with `com` at the log level of `debug`. For example, the following classes will be targeted:
+
+-   `com.kms.katalon.core.keyword.builtin.CommentKeyword`
+
+-   `com.kazurayam.myapp.Foo`
+
+I included a file [`logback-console.xml`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-console.xml) which is the default Logback configuration used by Katalon Studio. It contains some handles for your customization.
+
+## How to run a demo
+
+You want to create a Katalon Studio on your PC. Let me call it "test" test.
+
+In the "test" project please create `Test Cases/runMyApp3`. You want to copy the above source and paste it into your Test Case.
+
+Also please create `Keywords/myapp/MyApp3.groovy` and `Keywords/myapp/Foo.groovy`. You want to copy the above source and paste it into your Groovy class.
+
+Now we start interesting portions.
+
+Please visit the [Releases](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/releases/) page of GitHub repository. You will find a link to a jar file named `LoggerContextConfigurator-x.x.x.jar`. Please download the jar file and save it into the `Drivers` folder of your local Katalon Studio project. The `Driver` folder would like this:
+
+![02 Drivers](https://kazurayam.github.io/HowToWriteSLF4JLogsIntoFile/images/02_Drivers.png)
+
+Please create a file `Include/config/logback-file.xml`. The content of the file should be like the one as described above.
+
+Please note the `com.kazurayam.ks.LoggerContextConfigurator` class knows the the path of the xml file to load.
+
+Final step. You want to create a Test Listener.
+
+-   [Test Listener/ConfigLogger.groovy](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Test%40Listener/ConfigLogger.groovy)
+
+<!-- -->
+
+    import com.kazurayam.ks.LoggerContextConfigurator
+    import com.kms.katalon.core.annotation.BeforeTestCase
+    import com.kms.katalon.core.annotation.BeforeTestSuite
+    import com.kms.katalon.core.context.TestCaseContext
+    import com.kms.katalon.core.context.TestSuiteContext
+
+    class ConfigLogger {
+        
+        /**
+         * Executes before every test case starts.
+         * @param testCaseContext related information of the executed test case.
+         */
+        @BeforeTestCase
+        def beforeTestCase(TestCaseContext testCaseContext) {
+            LoggerContextConfigurator.configure()
+        }
+
+        /**
+         * Executes before every test suite starts.
+         * @param testSuiteContext: related information of the executed test suite.
+         */
+        @BeforeTestSuite
+        def beforeTestSuite(TestSuiteContext testSuiteContext) {
+            LoggerContextConfigurator.configure()
+        }
+    }
+
+This Test Listener just calls the `LoggerContextConfigurator.configure()` when any Test Cases and Test Suites are invoked. Effectively the SLF4J `Logger` is customized so that it writes logs into file.
+
+## Further customization
+
+You can change the name of output log file as well as its location by modifying the xml file.
+
+You can add new xml file and do whatever customization of SLF4J logging you want.
+
+How to? --- Please read the code and find for yourself.
