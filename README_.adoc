@@ -18,7 +18,7 @@ In a Katalon Studio project, I created link:https://github.com/kazurayam/HowToWr
 include::Scripts/runMyApp3/Script1683151952333.groovy[]
 ----
 
-`runMyApps` calls a Groovy class.
+This Test Case calls a Groovy class.
 
 - link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/myapp/MyApp3.groovy[`Keywords/com/kazurayam/myapp/MyApp3.groovy`]:
 
@@ -42,9 +42,9 @@ I ran the `Test Cases/runMyApp`. I got the following result:
 
 image::https://kazurayam.github.io/HowToWriteSLF4JLogsIntoFile/images/01_log_lines_disappeared.png[]
 
-In the Console tab of Katalon Studio, I expected to see 1000 lines of SLF4J logs from the `Foo` class. But actually I saw only the last part. Obviously, my `Foo` class emitted too much logs so that the logs exceeded the buffer size of the Console display.
+In the Console tab of Katalon Studio, I expected to see 1000 lines of SLF4J logs from the `Foo` class. But actually I saw only the last part. Obviously, my `Foo` class emitted too much logs so that the logs exceeded the buffer size of the Console window of Katalon Studio GUI.
 
-I wanted to see the whole SLF4J logs from my application class. How can I manage it? --- **I want to write the SLF4J logs into a text file**.
+I wanted to see the whole SLF4J logs from my application class. How can I achieve it? --- **I want to write the SLF4J logs into a text file**.
 
 == Solution
 
@@ -54,9 +54,9 @@ In the official Logback documentation, I found a sample code how to customize th
 
 - link:https://logback.qos.ch/manual/configuration.html#joranDirectly[Chapter3 Configuration, Invoking JoranConfigurator directly]
 
-Using this technique, I should be able to customize the `LoggingContext` of Logback so that the logs out of my Test Case to be written into a text file.
+Using this technique, I should be able to customize the `LoggingContext` of Logback so that it writes the logs into a text file.
 
-== Solution described
+== Description
 
 I have developed a Groovy class link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy[`com.kazurayam.ks.LoggerContextConfigurator`]
 
@@ -65,9 +65,7 @@ I have developed a Groovy class link:https://github.com/kazurayam/HowToWriteSLF4
 include::Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy[]
 ----
 
-This code is almost identical to the sample code of Logback documentation. It overwrites the LoggerContext object as constructed by Katalon Studio while overwriting properties with the specified XML.
-
-The class applies the following XML config as default.
+This code is almost identical to the sample code of Logback documentation. It modifies the LoggerContext object which were constructed by Katalon Studio. It overwrites some properties of the LoggerContext as specified by the XML config file, which is as follows:
 
 - link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-file.xml[]
 
@@ -76,13 +74,15 @@ The class applies the following XML config as default.
 include::Include/config/logback-file.xml[]
 ----
 
-This XML declares  an Appender named `FILE`. And the `FILE` appender is applied to all classes of which fully-qualified-class-names starts with `com` at the log level of `debug`. For example, the following classes will be targeted:
+This XML declares an Appender named `FILE`. And the `FILE` appender is applied to all classes of which fully-qualified-class-names starts with `com` at the log level of `debug`. For example, the following classes will be targeted:
 
 - `com.kms.katalon.core.keyword.builtin.CommentKeyword`
 - `com.kazurayam.myapp.Foo`
 
-I included a file link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-console.xml[`logback-console.xml`] which is the default Logback configuration used by Katalon Studio. It contains some handles for your  customization.
-
+[quote]
+____
+I included a file link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-console.xml[`logback-console.xml`] which is the default Logback configuration used by Katalon Studio. If you read this, you would understand how the logging is configured as default in Katalon Studio.
+____
 
 == How to create a demo
 

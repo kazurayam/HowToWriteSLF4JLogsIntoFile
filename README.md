@@ -18,7 +18,7 @@ In a Katalon Studio project, I created [`Test Cases/runMyApps`](https://github.c
     MyApp3 instance = new MyApp3()
     instance.execute()
 
-`runMyApps` calls a Groovy class.
+This Test Case calls a Groovy class.
 
 -   [`Keywords/com/kazurayam/myapp/MyApp3.groovy`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/myapp/MyApp3.groovy):
 
@@ -67,7 +67,7 @@ This calls another Groovy class:
     /**
      * A class that emits a lot of logs which are very long
      * so that the amount of characters emitted by this class
-     * will overflow the buffer of Console of Katalon Stduio
+     * will overflow the buffer of Console window of Katalon Stduio
      */
     public class Foo {
 
@@ -90,9 +90,9 @@ I ran the `Test Cases/runMyApp`. I got the following result:
 
 ![01 log lines disappeared](https://kazurayam.github.io/HowToWriteSLF4JLogsIntoFile/images/01_log_lines_disappeared.png)
 
-In the Console tab of Katalon Studio, I expected to see 1000 lines of SLF4J logs from the `Foo` class. But actually I saw only the last part. Obviously, my `Foo` class emitted too much logs so that the logs exceeded the buffer size of the Console display.
+In the Console tab of Katalon Studio, I expected to see 1000 lines of SLF4J logs from the `Foo` class. But actually I saw only the last part. Obviously, my `Foo` class emitted too much logs so that the logs exceeded the buffer size of the Console window of Katalon Studio GUI.
 
-I wanted to see the whole SLF4J logs from my application class. How can I manage it? --- **I want to write the SLF4J logs into a text file**.
+I wanted to see the whole SLF4J logs from my application class. How can I achieve it? --- **I want to write the SLF4J logs into a text file**.
 
 ## Solution
 
@@ -102,9 +102,9 @@ In the official Logback documentation, I found a sample code how to customize th
 
 -   [Chapter3 Configuration, Invoking JoranConfigurator directly](https://logback.qos.ch/manual/configuration.html#joranDirectly)
 
-Using this technique, I should be able to customize the `LoggingContext` of Logback so that the logs out of my Test Case to be written into a text file.
+Using this technique, I should be able to customize the `LoggingContext` of Logback so that it writes the logs into a text file.
 
-## Solution described
+## Description
 
 I have developed a Groovy class [`com.kazurayam.ks.LoggerContextConfigurator`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy)
 
@@ -143,9 +143,7 @@ I have developed a Groovy class [`com.kazurayam.ks.LoggerContextConfigurator`](h
         }
     }
 
-This code is almost identical to the sample code of Logback documentation. It overwrites the LoggerContext object as constructed by Katalon Studio while overwriting properties with the specified XML.
-
-The class applies the following XML config as default.
+This code is almost identical to the sample code of Logback documentation. It modifies the LoggerContext object which were constructed by Katalon Studio. It overwrites some properties of the LoggerContext as specified by the XML config file, which is as follows:
 
 -   <https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-file.xml>
 
@@ -180,7 +178,7 @@ This XML declares an Appender named `FILE`. And the `FILE` appender is applied t
 
 -   `com.kazurayam.myapp.Foo`
 
-I included a file [`logback-console.xml`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-console.xml) which is the default Logback configuration used by Katalon Studio. It contains some handles for your customization.
+> I included a file [`logback-console.xml`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-console.xml) which is the default Logback configuration used by Katalon Studio. If you read this, you would understand how the logging is configured as default in Katalon Studio.
 
 ## How to create a demo
 
