@@ -35,4 +35,20 @@ If you read the source of the `Foo` class, you would notice that it generates qu
 
 I rand the `Test Cases/runMyApp`. I got the following result:
 
+image::https://kazurayam.github.io/HowToWriteSLF4JLogsIntoFile/images/01_log_lines_disappeared.png[]
+
+In the Console tab of Katalon Studio, I expected to see 1000 lines of SLF4J logs from the `Foo` class. But actually I saw only the last part. Obviously, my `Foo` class emitted too much logs so that the logs exceeded the buffer size of the Console display.
+
+I wanted to see the whole SLF4J logs from my application class. How can I manage it? --- **I want to write the SLF4J logs into a text file**.
+
+== Solution
+
+Katalon Studio uses the link:https://www.baeldung.com/slf4j-with-log4j2-logback[SLF4J with Logback].
+
+In the offical Logback documentation, I found a sample code how to customize the Logback Logger while specifying XML conf file.
+
+- link:https://logback.qos.ch/manual/configuration.html#joranDirectly[Chapter3 Configuration, Invoking JoranConfigurator directly]
+
+Using this technique, I should be able to customize the `LoggingContext` of Logback so that the logs out of my Test Case to be written into a text file.
+
 
