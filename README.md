@@ -259,6 +259,28 @@ You can also change the name and location of the output log file. See the [logba
       <property name="LOG_FILE_NAME" value="myapp" />
       ...
 
+You can add/change/delete the `<loggers>` in the `logback-file.xml`. For example, it contains this:
+
+    <!-- com.kms and com.kazurayam, etc -->
+      <logger name="com" level="debug">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="STDERR"/>
+
+        <appender-ref ref="FILE" />
+      </logger>
+
+If I want to I can change this to:
+
+    <!-- com.kms and com.kazurayam, etc -->
+      <logger name="com.kms.katalon" level="debug">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="STDERR"/>
+
+        <appender-ref ref="FILE" />
+      </logger>
+
+This change will make a significant difference in the resulting text file. Why? ---- you should be able to understand the change if you are trained enough for Logback.
+
 Further more, you can change the Logback configuration more drastically. For example,
 
 1.  you can change the message format by amending `<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>`
