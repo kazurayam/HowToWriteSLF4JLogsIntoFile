@@ -11,4 +11,28 @@ I created this project in the hope that it can reply to an old question posted i
 
 == Problem to solve
 
-In a Katalon Studio project, I created
+In a Katalon Studio project, I created link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Scripts/runMyApp3/Script1683151952333.groovy[`Test Cases/runMyApps`]:
+
+[source]
+----
+include::Scripts/runMyApp3/Script1683151952333.groovy[]
+----
+
+`runMyApps` calls a Groovy class.
+
+- link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/myapp/MyApp3.groovy[`Keywords/com/kazurayam/myapp/MyApp3.groovy`]:
+
+This calls another Groovy class:
+
+- link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/myapp/Foo.groovy[]
+
+[source]
+----
+include::Keywords/com/kazurayam/myapp/Foo.groovy[]
+----
+
+If you read the source of the `Foo` class, you would notice that it generates quite a lot of logs (1000 lines) using the `org.slf4j.Logger`. And each line of log will be very long (3.8K characters actually). The size of log will be 1000 * 3.8K = 3.8Mega characters.
+
+I rand the `Test Cases/runMyApp`. I got the following result:
+
+
