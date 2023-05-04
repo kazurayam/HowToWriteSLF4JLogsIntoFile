@@ -1,0 +1,14 @@
+= How to write SLF4J logs into file
+
+This is a link:https://katalon.com/katalon-studio[Katalon Studio] for demonstration purpose.
+You can download the zip from the link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/releases/[Releases] page on the GitHub.
+
+This project was created using link:https://github.com/katalon-studio/katalon-studio/releases[version 8.3.0] but it should work on any versions.
+
+I created this project in the hope that it can reply to an old question posted in the Katalon user forum at April 2019:
+
+- link:https://forum.katalon.com/t/write-the-sl4j-logs-into-a-text-file/23332["Write the slf4j logs into a text file"]
+
+== Problem to solve
+
+In a Katalon Studio project, I created

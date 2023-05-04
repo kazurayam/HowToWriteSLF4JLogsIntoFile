@@ -1,1 +1,51 @@
-version = "0.1.0"
+plugins {
+  id 'groovy'
+}
+
+group = 'com.kazurayam'
+version = '0.2.0-SNAPSHOT'
+
+ext {
+  groovyVersion = '2.4.21'
+  isReleaseVersion = ! version.endsWith('SNAPSHOT')
+}
+
+configurations {
+  generateDocs
+}
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+dependencies {
+  implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
+  implementation fileTree(dir: "/Applications/Katalon Studio.app/Contents/Eclipse/plugins", include: ['*.jar'])
+  generateDocs "org.codehaus.groovy:groovy-all:${groovyVersion}"
+}
+
+sourceSets {
+  main {
+    groovy {
+      srcDirs = ['Keywords']
+      srcDir 'Libs'
+      include 'com/kazurayam/ks/*'
+    }
+  }
+}
+
+task groovydoc(type: Groovydoc, overwrite:true) {
+  source = sourceSets.main.groovy
+  classpath = configurations.implementation
+  groovyClasspath = project.configurations.generateDocs
+  include 'com/kazurayam/ks/*'
+  exclude '**/*Test.groovy'
+}
+
+task publishGroovydoc(type: Copy) {
+  from 'build/docs/groovydoc'
+  into 'docs/api'
+}
+
+groovydoc.finalizedBy publishGroovydoc
