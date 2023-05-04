@@ -51,4 +51,6 @@ In the offical Logback documentation, I found a sample code how to customize the
 
 Using this technique, I should be able to customize the `LoggingContext` of Logback so that the logs out of my Test Case to be written into a text file.
 
+== Solution described
 
+The [Releases] page

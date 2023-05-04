@@ -72,3 +72,7 @@ In the offical Logback documentation, I found a sample code how to customize the
 -   [Chapter3 Configuration, Invoking JoranConfigurator directly](https://logback.qos.ch/manual/configuration.html#joranDirectly)
 
 Using this technique, I should be able to customize the `LoggingContext` of Logback so that the logs out of my Test Case to be written into a text file.
+
+## Solution described
+
+The \[Releases\] page
