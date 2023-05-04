@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  In the directory `KatalonInstallationDir/Contents/Eclipse/plugins/com.kms.katalon.coreContents/Eclipse/plugins/`
+  In the directory `<KatalonInstallationDirectory>/Contents/Eclipse/plugins/com.kms.katalon.coreContents/Eclipse/plugins/`
   there is a jar file named `com.kms.katalon.core_1.0.0.202303100818.jar`
   The jar contains a file `resources/logback/logback-console.xml`.
   This is the Logback configuration applied to the overall processing in Katalon Studio.
   
-  kazurayam took the copy of that xml file, pasted here.
-  kazurayam modified it slightly so that the logs are written into a file.
-  The path of the file is specified runtime.
-  But how?
--->
+  kazurayam copied it here just for reference.
+  This file is not to be used. 
+ ->
 <configuration>
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <target>System.out</target>
