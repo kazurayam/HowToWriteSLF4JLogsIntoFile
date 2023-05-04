@@ -263,6 +263,6 @@ Further more, you can change the Logback configuration more drastically. For exa
 
 1.  you can change the message format by amending `<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>`
 
-2.  you can ./switch the Appender class to [RollingFileAppender](https://www.baeldung.com/logback#3-rollingfileappender)
+2.  you can switch the Appender class to [RollingFileAppender](https://www.baeldung.com/logback#3-rollingfileappender)
 
 You can do any customization as far as Logback allows.
