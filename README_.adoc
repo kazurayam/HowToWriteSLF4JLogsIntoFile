@@ -36,9 +36,9 @@ This calls another Groovy class:
 include::Keywords/com/kazurayam/myapp/Foo.groovy[]
 ----
 
-If you read the source of the `Foo` class, you would notice that it generates quite a lot of logs (1000 lines) using the `org.slf4j.Logger`. And each line of log will be very long (3.8K characters actually). The size of log will be 1000 * 3.8K = 3.8Mega characters.
+If you read the source of the `Foo` class, you would notice that it generates quite a lot of debug logs (1000 lines) using the `org.slf4j.Logger`. And each log will be very long (3.8 K characters actually). The size of log will be 1000 * 3.8K = 3.8 Mega characters.
 
-I rand the `Test Cases/runMyApp`. I got the following result:
+I ran the `Test Cases/runMyApp`. I got the following result:
 
 image::https://kazurayam.github.io/HowToWriteSLF4JLogsIntoFile/images/01_log_lines_disappeared.png[]
 
@@ -48,9 +48,9 @@ I wanted to see the whole SLF4J logs from my application class. How can I manage
 
 == Solution
 
-Katalon Studio uses the link:https://www.baeldung.com/slf4j-with-log4j2-logback[SLF4J with Logback].
+Katalon Studio internally uses the link:https://www.baeldung.com/slf4j-with-log4j2-logback[SLF4J with Logback].
 
-In the offical Logback documentation, I found a sample code how to customize the Logback Logger while specifying XML conf file.
+In the official Logback documentation, I found a sample code how to customize the Logback Logger while specifying configuration via XML file.
 
 - link:https://logback.qos.ch/manual/configuration.html#joranDirectly[Chapter3 Configuration, Invoking JoranConfigurator directly]
 
@@ -62,7 +62,7 @@ I have developed a Groovy class link:https://github.com/kazurayam/HowToWriteSLF4
 
 [source]
 ----
-include:Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy[]
+include::Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy[]
 ----
 
 This code is almost identical to the sample code of Logback documentation. It overwrites the LoggerContext object as constructed by Katalon Studio while overwriting properties with the specified XML.
