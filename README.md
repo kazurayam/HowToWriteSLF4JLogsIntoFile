@@ -248,9 +248,13 @@ This file contains full lines of logs emitted by the classes in a Test Case run.
 
 ## Further customization
 
+### Logback config file’s name and location
+
 You can change the name and location of the Logback config file. See the [Test Listener/ConfigLogger.groovy](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Test%20Listeners/ConfigLogger.groovy) file. There you can find the following statement, which you can change as you want:
 
          LoggerContextConfigurator.configure("Include/config/logback-file.xml")
+
+### output log file’s name and location
 
 You can also change the name and location of the output log file. See the [logback-file.xml](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-file.xml) file. There you can find the following declarations, which you can change as you want:
 
@@ -258,6 +262,8 @@ You can also change the name and location of the output log file. See the [logba
       <property name="LOG_ROOT" value="./build/logs" />
       <property name="LOG_FILE_NAME" value="myapp" />
       ...
+
+### Definition of loggers
 
 You can add/change/delete the `<loggers>` in the `logback-file.xml`. For example, it contains this:
 
@@ -280,6 +286,8 @@ If I want to I can change this to:
       </logger>
 
 This change will make a significant difference in the resulting text file. Why? ---- you should be able to understand the change if you are trained enough for Logback.
+
+### What else?
 
 Further more, you can change the Logback configuration more drastically. For example,
 
