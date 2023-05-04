@@ -53,4 +53,52 @@ Using this technique, I should be able to customize the `LoggingContext` of Logb
 
 == Solution described
 
-The [Releases] page
+I have developed a Groovy class link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy[`com.kazurayam.ks.LoggerContextConfigurator`]
+
+[source]
+----
+include:Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy[]
+----
+
+This code is almost identical to the sample code of Logback documentation. It overwrites the LoggerContext object as constructed by Katalon Studio while overwriting properties with the specified XML.
+
+The class applies the following XML config as default.
+
+- link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-file.xml[]
+
+[source]
+----
+include::Include/config/logback-file.xml[]
+----
+
+This XML declares  an Appender named `FILE`. And the `FILE` appender is applied to all classes of which fully-qualified-class-names starts with `com` at the log level of `debug`. For example, the following classes will be targeted:
+
+- `com.kms.katalon.core.keyword.builtin.CommentKeyword`
+- `com.kazurayam.myapp.Foo`
+
+I included a file link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-console.xml[`logback-console.xml`] which is the default Logback configuration used by Katalon Studio. It contains some handles for your  customization.
+
+
+== How to run a demo
+
+You want to create a Katalon Studio on your PC. Let me call it "test" test.
+
+In the "test" project please create `Test Cases/runMyApp3`. You want to copy the above source and paste it into your Test Case.
+
+Also please create `Keywords/myapp/MyApp3.groovy` and `Keywords/myapp/Foo.groovy`. You want to copy the above source and paste it into your Groovy class.
+
+Now we start interesting portions.
+
+Please visit the link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/releases/[Releases] page of GitHub repository. You will find a link to a jar file named `LoggerContextConfigurator-x.x.x.jar`. Please download the jar file and save it into the `Drivers` folder of your local Katalon Studio project. The `Driver` folder would like this:
+
+image::https://kazurayam.github.io/HowToWriteSLF4JLogsIntoFile/images/02_Drivers.png[]
+
+
+
+
+
+
+
+In the link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/releases/[Releases] page, you can find a link to `LoggerContextConfigurator-x.x.x.jar`.
+
+
