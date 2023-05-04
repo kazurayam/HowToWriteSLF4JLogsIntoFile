@@ -22,9 +22,14 @@ include::Scripts/runMyApp3/Script1683151952333.groovy[]
 
 - link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/myapp/MyApp3.groovy[`Keywords/com/kazurayam/myapp/MyApp3.groovy`]:
 
+[source]
+----
+include::Keywords/com/kazurayam/myapp/MyApp3.groovy[]
+----
+
 This calls another Groovy class:
 
-- link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/myapp/Foo.groovy[]
+- link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/myapp/Foo.groovy[`Keywords/com/kazurayam/myapp/Foo.groovy`]
 
 [source]
 ----
