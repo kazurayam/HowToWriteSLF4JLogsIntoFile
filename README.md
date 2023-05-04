@@ -231,7 +231,7 @@ The final step; you want to create a Test Listener.
 
 This Test Listener just calls the `LoggerContextConfigurator.configure(String xmlPath)` before any Test Cases and Test Suites are invoked. Effectively the SLF4J `Logger` is customized so that it writes logs into file.
 
-Now I ran the `Test Cases/TC1`. It runs for a few seconds. It created a very large text file at `build/logs/myapp.log`, which looks something line this:
+Now I can run the `Test Cases/TC1`. It will run for a few seconds. It will create a very large text file at `build/logs/myapp.log`, which will look something line this:
 
     2023-05-04 12:05:58.223 INFO  com.kazurayam.myapp.MyApp3               - Entering MyApp3 application.
     2023-05-04 12:05:58.360 INFO  c.k.k.c.keyword.builtin.CommentKeyword   - calling Foo
@@ -244,7 +244,7 @@ Now I ran the `Test Cases/TC1`. It runs for a few seconds. It created a very lar
     2023-05-04 12:06:00.081 INFO  com.kazurayam.myapp.MyApp3               - Exiting MyApp3 application
     2023-05-04 12:06:00.098 INFO  c.k.katalon.core.main.TestCaseExecutor   - END Test Cases/runMyApp3
 
-This proves that I could customize the Logback configuration in Katalon Studio and could write the SLF4J logs into a text file.
+This file contains full lines of logs emitted by the classes in a Test Case run. This proves that I could customize the Logback configuration in Katalon Studio and could write the SLF4J logs into a text file.
 
 ## Further customization
 
@@ -259,10 +259,10 @@ You can also change the name and location of the output log file. See the [logba
       <property name="LOG_FILE_NAME" value="myapp" />
       ...
 
-You can change the Logback configuration XML file more drastically. For example,
+Further more, you can change the Logback configuration more drastically. For example,
 
 1.  you can change the message format by amending `<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>`
 
-2.  you switch the Appender class to [RollingFileAppender](https://www.baeldung.com/logback#3-rollingfileappender)
+2.  you can ./switch the Appender class to [RollingFileAppender](https://www.baeldung.com/logback#3-rollingfileappender)
 
 You can do any customization as far as Logback allows.
