@@ -136,8 +136,22 @@ I could customize the Logback config in Katalon Studio and could write the logs 
 
 == Further customization
 
-You can change the name of output log file as well as its location by modifying the xml file.
+You can change the name and location of the Logback config file. See the link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Test%40Listeners/ConfigLogger.groovy[Test Listener/ConfigLogger.groovy] file. There you can find the following statement, which you can change as you want:
 
-You can add new xml file and do whatever customization of SLF4J logging you want.
+[source]
+----
+		LoggerContextConfigurator.configure("Include/config/logback-file.xml")
+----
 
-How to? --- Please read the code and find for yourself.
+You can also change the name and location of the output log file. See the link:https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-file.xml[logback-file.xml] file. There you can find the following declarations, which you can change as you want:
+
+[source]
+----
+<configuration>
+  <property name="LOG_ROOT" value="./build/logs" />
+  <property name="LOG_FILE_NAME" value="myapp" />
+  ...
+----
+
+You change the Logback configuration XML file more drastically. You can do anything as far as Logback allows. For example, you can change the message format by amending `<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>`. And you switch the Appender class to link:https://www.baeldung.com/logback#3-rollingfileappender[RollingFileAppender].
+

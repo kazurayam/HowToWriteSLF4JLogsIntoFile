@@ -84,9 +84,9 @@ This calls another Groovy class:
         }
     }
 
-If you read the source of the `Foo` class, you would notice that it generates quite a lot of logs (1000 lines) using the `org.slf4j.Logger`. And each line of log will be very long (3.8K characters actually). The size of log will be 1000 \* 3.8K = 3.8Mega characters.
+If you read the source of the `Foo` class, you would notice that it generates quite a lot of debug logs (1000 lines) using the `org.slf4j.Logger`. And each log will be very long (3.8 K characters actually). The size of log will be 1000 \* 3.8K = 3.8 Mega characters.
 
-I rand the `Test Cases/runMyApp`. I got the following result:
+I ran the `Test Cases/runMyApp`. I got the following result:
 
 ![01 log lines disappeared](https://kazurayam.github.io/HowToWriteSLF4JLogsIntoFile/images/01_log_lines_disappeared.png)
 
@@ -96,9 +96,9 @@ I wanted to see the whole SLF4J logs from my application class. How can I manage
 
 ## Solution
 
-Katalon Studio uses the [SLF4J with Logback](https://www.baeldung.com/slf4j-with-log4j2-logback).
+Katalon Studio internally uses the [SLF4J with Logback](https://www.baeldung.com/slf4j-with-log4j2-logback).
 
-In the offical Logback documentation, I found a sample code how to customize the Logback Logger while specifying XML conf file.
+In the official Logback documentation, I found a sample code how to customize the Logback Logger while specifying configuration via XML file.
 
 -   [Chapter3 Configuration, Invoking JoranConfigurator directly](https://logback.qos.ch/manual/configuration.html#joranDirectly)
 
@@ -108,7 +108,40 @@ Using this technique, I should be able to customize the `LoggingContext` of Logb
 
 I have developed a Groovy class [`com.kazurayam.ks.LoggerContextConfigurator`](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy)
 
-    include:Keywords/com/kazurayam/ks/LoggerContextConfigurator.groovy[]
+    package com.kazurayam.ks
+
+    import org.slf4j.LoggerFactory;
+
+    import ch.qos.logback.classic.LoggerContext;
+    import ch.qos.logback.classic.joran.JoranConfigurator;
+    import ch.qos.logback.core.joran.spi.JoranException;
+    import ch.qos.logback.core.util.StatusPrinter;
+
+    /**
+     * https://yujiorama.github.io/unofficial-translations/logback-manual/03-configuration.html
+     */
+    public class LoggerContextConfigurator {
+
+        public static void configure() {
+            configure("Include/config/logback-file.xml")
+        }
+
+        public static void configure(String xml) {
+            // SLF4Jがlogbackを使うように設定されていると想定
+            LoggerContext context = (LoggerContext)LoggerFactory.getILoggerFactory()
+            try {
+                JoranConfigurator configurator = new JoranConfigurator();
+                configurator.setContext(context)
+                // デフォルトの設定を取り消したければcontext.reset()を呼び出す
+                //context.reset()
+                // context.reset()を呼ばなければデフォルトの設定を残し、その上に新しい設定要素を上書きする
+                configurator.doConfigure(xml)
+            } catch (JoranException je) {
+                // StatusPrinter will handle this
+            }
+            StatusPrinter.printInCaseOfErrorsOrWarnings(context);
+        }
+    }
 
 This code is almost identical to the sample code of Logback documentation. It overwrites the LoggerContext object as constructed by Katalon Studio while overwriting properties with the specified XML.
 
@@ -120,10 +153,9 @@ The class applies the following XML config as default.
 
     <?xml version="1.0" encoding="UTF-8"?>
     <configuration>
-      
       <property name="LOG_ROOT" value="./build/logs" />
       <property name="LOG_FILE_NAME" value="myapp" />
-      
+
       <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>${LOG_ROOT}/${LOG_FILE_NAME}.log</file>
         <append>true</append>
@@ -136,10 +168,10 @@ The class applies the following XML config as default.
       <logger name="com" level="debug">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="STDERR"/>
-        
+
         <appender-ref ref="FILE" />
       </logger>
-      
+
     </configuration>
 
 This XML declares an Appender named `FILE`. And the `FILE` appender is applied to all classes of which fully-qualified-class-names starts with `com` at the log level of `debug`. For example, the following classes will be targeted:
@@ -181,14 +213,14 @@ Final step. You want to create a Test Listener.
     import com.kms.katalon.core.context.TestSuiteContext
 
     class ConfigLogger {
-        
+
         /**
          * Executes before every test case starts.
          * @param testCaseContext related information of the executed test case.
          */
         @BeforeTestCase
         def beforeTestCase(TestCaseContext testCaseContext) {
-            LoggerContextConfigurator.configure()
+            LoggerContextConfigurator.configure("Include/config/logback-file.xml")
         }
 
         /**
@@ -197,7 +229,7 @@ Final step. You want to create a Test Listener.
          */
         @BeforeTestSuite
         def beforeTestSuite(TestSuiteContext testSuiteContext) {
-            LoggerContextConfigurator.configure()
+            LoggerContextConfigurator.configure("Include/config/logback-file.xml")
         }
     }
 
@@ -222,8 +254,15 @@ I could customize the Logback config in Katalon Studio and could write the logs 
 
 ## Further customization
 
-You can change the name of output log file as well as its location by modifying the xml file.
+You can change the name and location of the Logback config file. See the [Test Listener/ConfigLogger.groovy](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Test%40Listeners/ConfigLogger.groovy) file. There you can find the following statement, which you can change as you want:
 
-You can add new xml file and do whatever customization of SLF4J logging you want.
+         LoggerContextConfigurator.configure("Include/config/logback-file.xml")
 
-How to? --- Please read the code and find for yourself.
+You can also change the name and location of the output log file. See the [logback-file.xml](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/blob/develop/Include/config/logback-file.xml) file. There you can find the following declarations, which you can change as you want:
+
+    <configuration>
+      <property name="LOG_ROOT" value="./build/logs" />
+      <property name="LOG_FILE_NAME" value="myapp" />
+      ...
+
+You change the Logback configuration XML file more drastically. You can do anything as far as Logback allows. For example, you can change the message format by amending `<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-40.40logger{39} - %msg{}%n</pattern>`. And you switch the Appender class to [RollingFileAppender](https://www.baeldung.com/logback#3-rollingfileappender).

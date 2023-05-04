@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-  
   <property name="LOG_ROOT" value="./build/logs" />
   <property name="LOG_FILE_NAME" value="myapp" />
-  
+
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
     <file>${LOG_ROOT}/${LOG_FILE_NAME}.log</file>
     <append>true</append>
@@ -16,8 +15,8 @@
   <logger name="com" level="debug">
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="STDERR"/>
-    
+
     <appender-ref ref="FILE" />
   </logger>
-  
+
 </configuration>

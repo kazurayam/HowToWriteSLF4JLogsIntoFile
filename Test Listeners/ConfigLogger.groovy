@@ -5,14 +5,14 @@ import com.kms.katalon.core.context.TestCaseContext
 import com.kms.katalon.core.context.TestSuiteContext
 
 class ConfigLogger {
-	
+
 	/**
 	 * Executes before every test case starts.
 	 * @param testCaseContext related information of the executed test case.
 	 */
 	@BeforeTestCase
 	def beforeTestCase(TestCaseContext testCaseContext) {
-		LoggerContextConfigurator.configure()
+		LoggerContextConfigurator.configure("Include/config/logback-file.xml")
 	}
 
 	/**
@@ -21,6 +21,6 @@ class ConfigLogger {
 	 */
 	@BeforeTestSuite
 	def beforeTestSuite(TestSuiteContext testSuiteContext) {
-		LoggerContextConfigurator.configure()
+		LoggerContextConfigurator.configure("Include/config/logback-file.xml")
 	}
 }
