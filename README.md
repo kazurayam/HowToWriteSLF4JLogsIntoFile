@@ -1,4 +1,4 @@
-# How to write SLF4J logs into file
+# How to write SLF4J logs into file; i.e. How to customize Logback configuration in Katalon Studio
 
 This is a [Katalon Studio](https://katalon.com/katalon-studio) for demonstration purpose.
 You can download the zip from the [Releases](https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile/releases/) page on the GitHub.
