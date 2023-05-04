@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A class that emits a lot of logs which are very long
  * so that the amount of characters emitted by this class
- * will overflow the buffer of Console of Katalon Stduio
+ * will overflow the buffer of Console window of Katalon Stduio
  */
 public class Foo {
 
