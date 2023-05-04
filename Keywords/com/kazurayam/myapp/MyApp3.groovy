@@ -11,9 +11,6 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.core.util.StatusPrinter;
 import com.kazurayam.ks.LoggerContextConfigurator
 
-/**
- * https://yujiorama.github.io/unofficial-translations/logback-manual/03-configuration.html
- */
 public class MyApp3 {
 
 	final static Logger logger = LoggerFactory.getLogger(MyApp3.class)
