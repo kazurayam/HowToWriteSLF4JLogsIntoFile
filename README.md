@@ -277,7 +277,7 @@ You can add/change/delete the `<loggers>` in the `logback-file.xml`. For example
 
 If I want to I can change this to:
 
-    <!-- com.kms.kms -->
+    <!-- com.kms.katalon -->
       <logger name="com.kms.katalon" level="debug">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="STDERR"/>
