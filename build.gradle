@@ -1,13 +1,16 @@
 plugins {
   id 'groovy'
+  id 'maven-publish'
+  id 'signing'
 }
 
 group = 'com.kazurayam'
-version = '0.2.0'
+version = '0.3.0'
 
 ext {
   groovyVersion = '2.4.21'
   isReleaseVersion = ! version.endsWith('SNAPSHOT')
+  repositoryName = 'HowToWriteLSF4JLogsIntoFile'
 }
 
 configurations {
@@ -35,10 +38,14 @@ sourceSets {
   }
 }
 
+tasks.withType(JavaCompile) {
+  options.compilerArgs << '-Xlint:unchecked'
+}
+
 task groovydoc(type: Groovydoc, overwrite:true) {
   source = sourceSets.main.groovy
-  classpath = configurations.implementation
-  groovyClasspath = project.configurations.generateDocs
+  classpath = configurations.generateDocs
+  groovyClasspath = configurations.generateDocs
   include 'com/kazurayam/ks/*'
   exclude '**/*Test.groovy'
 }
@@ -49,3 +56,58 @@ task publishGroovydoc(type: Copy) {
 }
 
 groovydoc.finalizedBy publishGroovydoc
+
+task groovydocJar(type: Jar) {
+  archiveClassifier = 'javadoc'
+  from groovydoc
+}
+
+task sourcesJar(type: Jar) {
+  archiveClassifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+publishing {
+  publications {
+    loggercontextconfigurator(MavenPublication) {
+      artifact sourcesJar
+      artifact groovydocJar
+      pom {
+        groupId = project.group
+        name = project.rootProject.name
+        description = 'A classlib that enables you to customize Logback configuration on the fly'
+        url = 'https://github.com/kazurayam/HowToWriteSLF4JLogsIntoFile'
+        from components.java
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'https://www.apache.org.licenses/LICENSE-2.0.txt'
+          }
+        }
+        developers {
+          developer {
+            id = 'kazurayam'
+            name = 'URAYAMA,kazuaki'
+            email = 'kazuaki.urayama@gmail.com'
+          }
+        }
+        scm {
+          connection = "scm:git:https://github.com/kazurayam/${repositoryName}.git"
+          developerConnection = "scm:git:git@github.com:kazurayam/${repositoryName}.git"
+          url = "https://github.com/kazurayam/${repositoryName}"
+        }
+      }
+    }
+  }
+  repositories {
+    maven {
+      def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = isReleaseVersion ? releaseRepo: snapshotRepo
+            credentials {
+                username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
+                password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
+            }
+    }
+  }
+}
