@@ -19,23 +19,6 @@ public class MyApp3 {
 	final static Logger logger = LoggerFactory.getLogger(MyApp3.class)
 
 	public void execute() {
-		/*
-		 // SLF4Jがlogbackを使うように設定されていると想定
-		 LoggerContext context = (LoggerContext)LoggerFactory.getILoggerFactory()
-		 try {
-		 JoranConfigurator configurator = new JoranConfigurator();
-		 configurator.setContext(context)
-		 // デフォルトの設定を取り消すために context.reset()を呼び出す
-		 // context.reset()を呼ばなければ設定を上書きすることになる
-		 //context.reset()
-		 //configurator.doConfigure("src/main/resources/logback-console-file.xml")
-		 configurator.doConfigure("src/main/resources/logback-file.xml")
-		 } catch (JoranException je) {
-		 // StatusPrinter will handle this
-		 }
-		 StatusPrinter.printInCaseOfErrorsOrWarnings(context);
-		 */
-
 		logger.info("Entering MyApp3 application.");
 		WebUI.comment("calling Foo")
 
