@@ -5,10 +5,10 @@ plugins {
 }
 
 group = 'com.kazurayam'
-version = '0.3.0'
+version = '0.4.0'
 
 ext {
-  groovyVersion = '2.4.21'
+  groovyVersion = '2.4.20'
   isReleaseVersion = ! version.endsWith('SNAPSHOT')
   repositoryName = 'HowToWriteLSF4JLogsIntoFile'
 }
@@ -23,8 +23,8 @@ repositories {
 }
 
 dependencies {
-  implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
-  implementation fileTree(dir: "/Applications/Katalon Studio.app/Contents/Eclipse/plugins", include: ['*.jar'])
+  compileOnly "org.codehaus.groovy:groovy-all:${groovyVersion}"
+  compileOnly fileTree(dir: "/Applications/Katalon Studio.app/Contents/Eclipse/plugins", include: ['*.jar'])
   generateDocs "org.codehaus.groovy:groovy-all:${groovyVersion}"
 }
 
@@ -110,4 +110,8 @@ publishing {
             }
     }
   }
+}
+
+signing {
+  sign publishing.publications.loggercontextconfigurator
 }
